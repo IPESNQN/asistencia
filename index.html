@@ -3,25 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instituto Panamericano - Sistema de Gestión</title>
+  <title>Instituto Panamericano - Acceso</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #f1f3f9;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body { margin: 0; padding: 0; background-color: #1c2333; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .card { background: #ffffff; width: 100%; max-width: 360px; padding: 32px 24px; border-radius: 8px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .title { margin: 0; font-size: 1.2rem; font-weight: 700; color: #1a1a1a; }
+    .subtitle { margin: 6px 0 24px 0; font-size: 0.85rem; color: #666; }
+    .input-group { text-align: left; margin-bottom: 16px; }
+    .input-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #333; margin-bottom: 4px; }
+    .input-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; outline: none; }
+    .btn-submit { width: 100%; padding: 12px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .btn-submit:hover { background-color: #2563eb; }
+    #msg { margin-top: 12px; font-size: 0.85rem; color: #d97706; }
   </style>
 </head>
 <body>
-  <iframe src="https://script.google.com/macros/s/AKfycby3MCUep7xvHdYJX-UffiSwhj1c0J0XXMyVqzQARVvhJXTlqdm6nPOvQeEJXIDdP06BkQ/exec" allow="fullscreen"></iframe>
+
+  <div class="card">
+    <h2 class="title">Instituto Panamericano</h2>
+    <p class="subtitle">Acceso exclusivo para Docentes</p>
+    
+    <div class="input-group">
+      <label>Usuario</label>
+      <input type="text" id="usuario">
+    </div>
+    
+    <div class="input-group">
+      <label>Contraseña</label>
+      <input type="password" id="password">
+    </div>
+    
+    <button class="btn-submit" onclick="enviar()">Ingresar al Formulario</button>
+    <div id="msg"></div>
+  </div>
+
+  <script>
+    async function enviar() {
+      const u = document.getElementById('usuario').value;
+      const p = document.getElementById('password').value;
+      const msg = document.getElementById('msg');
+
+      if (!u || !p) {
+        msg.innerText = "Por favor completa todos los campos.";
+        return;
+      }
+
+      msg.innerText = "Validando...";
+
+      // Envío de datos a Apps Script mediante API REST
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfyCby3MCUep7xvHdYJX-UffiSwhj1c0J0XXMyVqzQARVvhJXTlqdm6nPOvQeEJXIDdP06BkQ/exec", {
+          method: "POST",
+          body: JSON.stringify({ usuario: u, password: p })
+        });
+        const res = await response.json();
+        
+        if (res.success) {
+          msg.innerText = "¡Acceso correcto!";
+          // Redireccionar o cargar el siguiente módulo
+        } else {
+          msg.innerText = "Credenciales incorrectas.";
+        }
+      } catch (err) {
+        msg.innerText = "Error al conectar con el servidor.";
+      }
+    }
+  </script>
+
 </body>
 </html>
