@@ -168,24 +168,21 @@
 
         const data = await response.json();
 
-        if (data.success) {
-          msg.className = "msg-success";
-          msg.innerText = "¡Acceso concedido!";
-          
-          // AQUÍ defines qué hacer al entrar con éxito:
-          // Ejemplo: redirigir a una subpágina o cargar el panel
-          // window.location.href = "panel.html";
-        } else {
-          msg.className = "msg-error";
-          msg.innerText = data.message || "Usuario o contraseña incorrectos.";
-          btn.disabled = false;
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        msg.className = "msg-error";
-        msg.innerText = "Error al conectar con el servidor.";
-        btn.disabled = false;
-      }
+      if (data.success) {
+  msg.className = "msg-success";
+  msg.innerText = "¡Acceso concedido!";
+  
+  // Reemplaza todo el contenido del sitio por el sistema cargado
+  setTimeout(() => {
+    document.body.innerHTML = `
+      <iframe 
+        src="https://script.google.com/macros/s/TU_SCRIPT_ID/exec" 
+        style="width:100vw; height:100vh; border:none; margin:0; padding:0;"
+        allow="fullscreen">
+      </iframe>
+    `;
+  }, 800);
+}
     }
   </script>
 
